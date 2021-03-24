@@ -22,7 +22,7 @@ const params = {
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 10, // Assigning read/write maximum capacity
-    WriteCapcityUnits: 10
+    WriteCapacityUnits: 10
   }
 }
 
