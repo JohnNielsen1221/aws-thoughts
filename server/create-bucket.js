@@ -11,7 +11,7 @@ AWS.config.update({ region: 'us-east-2' })
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' })
 
 // Create the parameters for calling createBucket
-let bucketParams = {
+const bucketParams = {
   Bucket: 'user-images-' + uuidv4()
 }
 
