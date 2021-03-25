@@ -27,4 +27,34 @@ router.get('/users', (req, res) => {
   })
 })
 
+// Pass username from client to server
+router.get('/users/:username', (req, res) => {
+  console.log(`Querying for thought(s) from ${req.params.username}.`)
+  const params = {
+    TableName: table,
+    KeyConditionExpression: '#un = :user', // Specifies search criteria
+    ExpressionAttributeNames: {
+      '#un': 'username', // the # prefix establishes that this is an attribute name alias
+      '#ca': 'createdAt',
+      '#th': 'thought'
+    },
+    ExpressionAttributeValues: {
+      ':user': req.params.username // The : establishes that this is an attribute value alias
+    },
+    ProjectionExpression: '#th, #ca', // Determines which Attribus (columns) will be returned
+    ScanIndexForward: false // Specifies order of sort key. Default is true, which would be ascending
+  }
+
+  // Retrieve single user's thoughts from database
+  dynamodb.query(params, (err, data) => {
+    if (err) {
+      console.error('Unable to query. Error:', JSON.stringify(err, null, 2))
+      res.status(500).json(err)
+    } else {
+      console.log('Query succeeded.')
+      res.json(data.Items) // Response data from the database is located in the Items property
+    }
+  })
+})
+
 module.exports = router
