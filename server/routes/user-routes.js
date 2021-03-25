@@ -4,7 +4,7 @@ const AWS = require('aws-sdk')
 
 const awsConfig = {
   region: 'us-east-2',
-  enndpoint: 'http://localhost:8000'
+  endpoint: 'http://localhost:8000'
 
 }
 
