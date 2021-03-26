@@ -57,4 +57,18 @@ router.get('/users/:username', (req, res) => {
   })
 })
 
+// Create Post route for new thought
+router.post('/users', (req, res) => {
+  const params = {
+    TableName: table,
+    Item: {
+      username: req.body.username,
+      createdAt: Date.now(),
+      thought: req.body.thought
+    }
+  }
+  // database call
+  
+})
+
 module.exports = router
