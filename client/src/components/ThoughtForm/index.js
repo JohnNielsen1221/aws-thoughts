@@ -1,8 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 const ThoughtForm = () => {
   const [formState, setFormState] = useState({ username: '', thought: '' })
   const [characterCount, setCharacterCount] = useState(0)
+
+  const fileInput = useRef(null)
+
+  const handleImageUpload = event => {
+    event.preventDefault() // Stops thought from saving before image is uploaded
+    const data = new FormData() // FormData makes it easy to construct key-value pairs
+    data.append('image', fileInput.current.files[0])
+    // send image file to eendpoint with the postImage function
+    const postImage = async () => {
+      try {
+        const res = await fetch('/api/image-upload', {
+          mode: 'cors',
+          method: 'POST',
+          body: data
+        })
+        if (!res.ok) throw new Error(res.statusText)
+        const postResponse = await res.json()
+        setFormState({ ...formState, image: postResponse.Location })
+
+        return postResponse.Location
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    postImage()
+  }
 
   // update state based on form input changes
   const handleChange = event => {
@@ -58,6 +84,21 @@ const ThoughtForm = () => {
           className='form-input col-12 col-md-9'
           onChange={handleChange}
         />
+        <label className='form-input col-12 p-1'>
+          Add an image to your thought:
+          <input
+            type='file'
+            ref={fileInput}
+            className='form-input p-2'
+          />
+          <button
+            className='btn'
+            onClick={handleImageUpload}
+            type='submit'
+          >
+            Upload
+          </button>
+        </label>
         <button className='btn col-12 col-md-3' type='submit'>
           Submit
         </button>
