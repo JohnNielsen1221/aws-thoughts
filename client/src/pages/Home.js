@@ -15,7 +15,7 @@ const Home = () => {
         const jsonData = await res.json()
         // sort the array by createdAt property ordered by descending values
         const data = jsonData.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
-        setThoughts([ ...data ])
+        setThoughts([...data])
         setIsLoaded(true)
       } catch (error) {
         console.log(error)
